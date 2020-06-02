@@ -1,0 +1,41 @@
+<nav class="navbar">
+    <header class="navbar-header">
+        <a href="/" class="logo">
+            Computer Market
+        </a>
+        <div id="basket-container">
+            <a class="navbar-item" id="basket-toggler">Корзина
+            {% if products_in_basket_count %}
+            ({{ products_in_basket_count }})
+            {% else %}
+            (0)
+            {% endif %}
+            </a>
+            <div id="basket">
+                <ul id="shopping-list">
+                    {% if products_in_basket %}
+                        {% for product_in_basket in products_in_basket%}
+                            <div class="product-in-basket-container">
+                             <li class="product-in-basket" id="{{ product_in_basket.product.id }}">{{ product_in_basket.name }} {{ product_in_basket.count }} шт * {{ product_in_basket.amount_per_item }} за шт</li>
+                            </div>
+                        {% endfor %}
+                        {% else %}
+                        <li id="basket-is-empty">Корзина пуста</li>
+                    {% endif %}
+                </ul>
+                <a style="margin-left: 30px; margin-bottom: 10px" href="{% url 'checkout' %}">Оформить заказ</a>
+            </div>
+        </div>
+
+
+        {#            <div class="search-form-container">#}
+        {#                <form method="get">#}
+        {#                    <div class="search-row">#}
+        {#                        <input type="text" name="search-query">#}
+        {#                        <button type="submit" class="search-button">Поиск</button>#}
+        {#                    </div>#}
+        {#                </form>#}
+        {#            </div>#}
+    </header>
+
+</nav>

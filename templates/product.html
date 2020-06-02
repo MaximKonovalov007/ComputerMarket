@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="content">
+        <div class="sidebar">
+            <ul>
+                {% for product_category in product_categories %}
+                    <li class="category">
+                        <a href="{% url 'category' product_category.id %}">{{ product_category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="catalog">
+            <div class="product-container">
+                <div class="images-on-product-page-container">
+                <div class="main-image-container">
+                <a id="prev" onclick="plus_slide(-1)">&#10094</a>
+                    <img src="{{ product_image_main.image.url }}" class="main-image">
+                    {% for product_image in product_images %}
+                         <img src="{{ product_image.image.url }}" class="main-image" style="display: none">
+                    {% endfor %}
+                <a id="next" onclick="plus_slide(1)">&#10095</a>
+                </div>
+
+                    <div style="text-align: center" class="product-images-container">
+                        <img src="{{ product_image_main.image.url }}" class="select-image selected" onclick="current_slide(1)">
+                    {% for product_image in product_images %}
+                         <img src="{{ product_image.image.url }}" class="select-image" onclick="current_slide()">
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="product-text-container">
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                    <span>Цена: {{ product.price }}</span>
+                    <form id="add-to-basket-form" action="!{% url 'basket_adding' %}">{% csrf_token %}
+                        <input type="number" value="1" id="number">
+                        <button type="submit" id="submit_btn" data-product_id = "{{ product_id }}" data-product_name = "{{ product.name }}" data-product_price = "{{ product.price }}">Добавить в корзину</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

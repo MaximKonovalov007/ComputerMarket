@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="content">
+        <div class="sidebar">
+            <ul>
+                {% for product_category in product_categories %}
+                    <li class="category">
+                        <a href="{% url 'category' product_category.id %}">{{ product_category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="catalog">
+
+            {% for product_image in products_images %}
+                <div class="product">
+                    <img src="{{ product_image.image.url }}" class="product-image">
+                    <h2 class="product-name">{{ product_image.product.name }}</h2>
+                    <p class="product-description">{{ product_image.product.description|truncatechars_html:60 }}</p>
+                    <span class="product-price">{{ product_image.product.price }}</span>
+                    <a href="{% url 'product' product_image.product.id %}"><button class="buy-btn" >Купить</button></a>
+                </div>
+            {% endfor %}
+
+        </div>
+        </div>
+    </section>
+{% endblock %}
