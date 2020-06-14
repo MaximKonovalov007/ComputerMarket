@@ -2,52 +2,51 @@
 {% load static %}
 
 {% block content %}
-<div class="checkout">
-<div class="checkout-form-user-data-container">
-    <form class="checkout-form-user-data" method="POST">{% csrf_token %}
-        <span class="form-error">{{ form.name.errors }}</span>
-        <div class="field-container">
-            <label>Имя</label>
-            <input type="text" name="{{ form.name.html_name }}" value="{{ request.POST.name }}">
+    <div class="checkout">
+    <form class="checkout-form" method="POST">{% csrf_token %}
+        <div class="checkout-form-user-data-container">
+                <span class="form-error">{{ form.name.errors }}</span>
+                <div class="field-container">
+                    <label>Имя</label>
+                    <input type="text" name="{{ form.name.html_name }}" value="{{ request.POST.name }}">
+                </div>
+                <span class="form-error">{{ form.phone.errors }}</span>
+                <div class="field-container">
+                    <label>Телефон</label>
+                    <input type="text" name="{{ form.phone.html_name }}" value="{{ request.POST.phone }}">
+                </div>
         </div>
-        <span class="form-error">{{ form.phone.errors }}</span>
-        <div class="field-container">
-            <label>Телефон</label>
-            <input type="text" name="{{ form.phone.html_phone }}" value="{{ request.POST.phone }}">
+        <div class="checkout-table-container">
+            <table>
+                <thead>
+                <th>Название товара</th>
+                <th>Количество</th>
+                <th>Цена за единицу товара</th>
+                <th>Общая цена</th>
+                </thead>
+                {% for product_in_basket in products_in_basket %}
+                    <tr>
+                        <td><span>{{ product_in_basket.name }}</span></td>
+                        <td>
+                            <input type="number" class="count" value="{{ product_in_basket.count }}" name="product_in_basket_{{ product_in_basket.id }}">
+                        </td>
+                        <td>
+                            <span class="price-per-item">{{ product_in_basket.amount_per_item }}</span>
+                        </td>
+                        <td>
+                            <span class="total-amount">{{ product_in_basket.product_total_amount }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr id="total-order-amount-container">
+                    <td></td>
+                    <td></td>
+                    <td>Итого:</td>
+                    <td><span id="total-order-amount">{{ total_order_amount }}</span></td>
+                </tr>
+            </table>
+            <button type="submit">Оформить заказ</button>
         </div>
     </form>
-</div>
-<div class="checkout-table-container">
-<table>
-<thead>
-<th>Название товара</th>
-<th>Количество</th>
-<th>Цена за единицу товара</th>
-<th>Общая цена</th>
-</thead>
-    {% for product_in_basket in products_in_basket %}
-        <tr>
-        <td><span>{{ product_in_basket.name }}</span></td>
-        <td>
-            <input type="number" class="count" value="{{ product_in_basket.count }}">
-        </td>
-            <td>
-                <span class="price-per-item">{{ product_in_basket.amount_per_item }}</span>
-            </td>
-        <td>
-            <span class="total-amount">{{ product_in_basket.product_total_amount }}</span>
-        </td>
-        </tr>
-    {% endfor %}
-<tr id="total-order-amount-container">
-    <td></td>
-    <td></td>
-    <td>Итого:</td>
-    <td><span id="total-order-amount">{{ total_order_amount}}</span></td>
-</tr>
-</table>
-<button>Оформить заказ</button>
-</div>
-
-</div>
+    </div>
 {% endblock %}

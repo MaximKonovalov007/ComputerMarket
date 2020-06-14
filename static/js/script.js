@@ -1,5 +1,6 @@
 $(document).ready(function () {
     let form = $('#add-to-basket-form');
+    calculation_total_order_amount();
 
     form.on("submit", function (e) {
         e.preventDefault();
@@ -79,7 +80,3 @@ $(document).ready(function () {
         calculation_total_order_amount();
     });
 });
-
-
-
-

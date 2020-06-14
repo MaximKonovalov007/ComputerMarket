@@ -1,4 +1,4 @@
-#!/home/maxim/PycharmProjects/ComputerMarket/venv/bin/python
+#!/home/maksim/ComputerMarket/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

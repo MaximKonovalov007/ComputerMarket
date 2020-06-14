@@ -61,6 +61,7 @@ class ProductInBasket(models.Model):
     count = models.IntegerField(default=1)
     amount_per_item = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     product_total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return "%s" % self.product.name
@@ -73,6 +74,19 @@ class ProductInBasket(models.Model):
         price_per_item = self.product.price
         self.product_total_amount = price_per_item * int(self.count)
         super(ProductInBasket, self).save(*args, **kwargs)
+
+    def product_in_order_post_save(sender, instance, created, **kwargs):
+        order = instance.order
+        all_products_in_order = ProductInOrder.objects.filter(order=order, is_active=True)
+
+        order_total_price = 0
+        for item in all_products_in_order:
+            order_total_price += item.total_amount
+
+        instance.order.total_amount = order_total_price
+        instance.order.save(force_update=True)
+
+    post_save.connect(product_in_order_post_save, sender=ProductInOrder)
 
 
 
