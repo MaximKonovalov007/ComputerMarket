@@ -20,16 +20,16 @@ def basket_adding(request):
     return_dict = {}
     session_key = request.session.session_key
     data = request.POST
-    product_id = data.get("product_id")
-    product = Product.objects.get(id=product_id)
-    product_name = data.get("product_name")
-    product_price = product.price
-    print(data.get("is_delete"))
 
     if data.get("is_delete") == "true":
-        ProductInBasket.objects.filter(id=product_id, session_key=session_key).delete()
+        product_in_basket_id = data.get("product_id")
+        ProductInBasket.objects.filter(id=product_in_basket_id, session_key=session_key).delete()
 
     else:
+        product_id = data.get("product_id")
+        product = Product.objects.get(id=product_id)
+        product_name = product.name
+        product_price = product.price
         number = request.POST['number']
         new_product, created = ProductInBasket.objects.get_or_create(session_key=session_key, product_id=product_id,
                                                                      name=product_name, amount_per_item=product_price,
@@ -37,8 +37,6 @@ def basket_adding(request):
         if not created:
             new_product.count += int(number)
             new_product.save(force_update=True)
-
-
 
     products_in_basket = ProductInBasket.objects.filter(session_key=session_key)
     products_in_basket_count = products_in_basket.count()
@@ -48,7 +46,6 @@ def basket_adding(request):
 
     for item in products_in_basket:
         product_dict = dict()
-        print(item)
         product_dict["id"] = item.id
         product_dict["name"] = item.name
         product_dict["price"] = item.amount_per_item
@@ -82,7 +79,6 @@ def checkout(request):
         for name, value in data.items():
             if name.startswith("product_in_basket_"):
                 products_in_basket_id = name.split("product_in_basket_")[1]
-                print(products_in_basket_id)
                 product_in_basket = ProductInBasket.objects.get(id=products_in_basket_id)
 
                 product_in_basket.count = int(value)

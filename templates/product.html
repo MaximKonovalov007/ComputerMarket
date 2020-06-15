@@ -35,7 +35,7 @@
                     <h2>{{ product.name }}</h2>
                     <p>{{ product.description }}</p>
                     <span>Цена: {{ product.price }}</span>
-                    <form id="add-to-basket-form" action="!{% url 'basket_adding' %}">{% csrf_token %}
+                    <form id="add-to-basket-form" action="!{% url 'basket_adding' %}">
                         <input type="number" value="1" id="number">
                         <button type="submit" id="submit_btn" data-product_id = "{{ product_id }}" data-product_name = "{{ product.name }}" data-product_price = "{{ product.price }}">Добавить в корзину</button>
                     </form>

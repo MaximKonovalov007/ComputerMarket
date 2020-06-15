@@ -12,11 +12,11 @@
             {% endif %}
             </a>
             <div id="basket">
-                <ul id="shopping-list">
+                <ul id="shopping-list">{% csrf_token %}
                     {% if products_in_basket %}
                         {% for product_in_basket in products_in_basket%}
                             <div class="product-in-basket-container">
-                                <li class="product-in-basket" id="{{ product_in_basket.product.id }}" data-product_id = "{{ product_id }}" data-product_name = "{{ product.name }}" data-product_price = "{{ product.price }}">{{ product_in_basket.name }} {{ product_in_basket.count }} шт * {{ product_in_basket.amount_per_item }} за шт = {{ product_in_basket.product_total_amount }} <span class="delete-product">x</span></li>
+                                <li class="product-in-basket" id="{{ product_in_basket.product.id }}" data-product_id = "{{ product_id }}" data-product_name = "{{ product.name }}" data-product_price = "{{ product.price }}">{{ product_in_basket.name }} {{ product_in_basket.count }} шт * {{ product_in_basket.amount_per_item }} за шт = {{ product_in_basket.product_total_amount }} <span class="delete-product" data-product_id="{{ product_in_basket.id }}">x</span></li>
                             </div>
                         {% endfor %}
                         {% else %}
