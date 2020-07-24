@@ -58,6 +58,7 @@ def basket_adding(request):
 
 
 def checkout(request):
+    maked_order = False
     session_key = request.session.session_key
     products_in_basket = ProductInBasket.objects.filter(session_key=session_key)
     products_in_basket_count = products_in_basket.count()
@@ -87,5 +88,7 @@ def checkout(request):
                 ProductInOrder.objects.create(product=product_in_basket.product, count=product_in_basket.count,
                                               amount_per_item=product_in_basket.amount_per_item, order=order,
                                               total_amount=product_in_basket.product_total_amount)
+
+                maked_order = True
 
     return render(request, 'checkout.html', locals())
